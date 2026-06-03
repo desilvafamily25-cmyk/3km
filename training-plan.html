@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>3km Training Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --gold:#f4c94e;
+  --green:#6ee97b;
+  --red:#ff6b6b;
+  --w07:rgba(255,255,255,.07);
+  --w10:rgba(255,255,255,.10);
+  --w15:rgba(255,255,255,.15);
+  --w20:rgba(255,255,255,.20);
+}
+
+html,body{height:100%;overflow:hidden;font-family:'Barlow',system-ui,sans-serif;-webkit-font-smoothing:antialiased;background:#000}
+
+/* ── CAROUSEL ── */
+#carousel{display:flex;height:100vh;height:-webkit-fill-available;will-change:transform;transition:transform .38s cubic-bezier(.25,.46,.45,.94)}
+#carousel.notrans{transition:none}
+
+/* ── SLIDE ── */
+.slide{
+  min-width:100vw;
+  height:100vh;
+  height:-webkit-fill-available;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:80px;
+  color:#fff;
+  /* animated gradient background */
+  background-size:280% 280%;
+  animation:bgshift 30s ease-in-out infinite;
+}
+
+@keyframes bgshift{
+  0%{background-position:0% 20%}
+  33%{background-position:100% 0%}
+  66%{background-position:80% 100%}
+  100%{background-position:0% 20%}
+}
+
+/* ── BACKGROUNDS (image not shorthand so background-size survives) ── */
+.bg-cover   {background-image:linear-gradient(160deg,#0f0f1a,#1a1a3e,#0a0f2a)}
+.bg-oval    {background-image:linear-gradient(160deg,#081808,#1a3a20,#0c2a14)}
+.bg-key     {background-image:linear-gradient(160deg,#5c0000,#b03020,#6a0a00)}
+.bg-easy    {background-image:linear-gradient(160deg,#083018,#1a7035,#0a4020)}
+.bg-rest    {background-image:linear-gradient(160deg,#071e3d,#15426b,#08264a)}
+.bg-prerace {background-image:linear-gradient(160deg,#4a1e00,#b05500,#6a2800)}
+.bg-raceday {background-image:linear-gradient(160deg,#260840,#5a2878,#341060)}
+.bg-strategy{background-image:linear-gradient(160deg,#0a0a20,#251858,#100a30)}
+.bg-script  {background-image:linear-gradient(160deg,#1a1000,#5e4200,#281800)}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:10;
+  padding:12px 16px 8px;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.topbar-r1{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.page-badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;
+  opacity:.85;display:flex;align-items:center;gap:6px;
+}
+.page-cnt{font-size:11px;opacity:.38;font-weight:600;white-space:nowrap}
+.key-star{background:var(--gold);color:#1a1000;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;border-radius:5px;padding:2px 7px}
+.race-tag{background:rgba(200,80,255,.35);color:#e8a0ff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border-radius:5px;padding:2px 7px}
+
+/* ── DAY STRIP ── */
+.daystrip{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:1px}
+.daystrip::-webkit-scrollbar{display:none}
+.ds-dot{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex-shrink:0;opacity:.3;transition:opacity .25s;min-width:30px}
+.ds-dot.active{opacity:1}
+.ds-dot.done{opacity:.65}
+.ds-pip{width:26px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);transition:background .25s,transform .25s}
+.ds-dot.active .ds-pip{background:var(--gold);transform:scaleY(1.6)}
+.ds-dot.done .ds-pip{background:var(--green)}
+.ds-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+
+/* ── CONTENT ── */
+.content{padding:16px 16px 0}
+
+h1{font-family:'Barlow Condensed',sans-serif;font-size:33px;font-weight:900;line-height:1.1;margin-bottom:3px;letter-spacing:.3px}
+.sub{font-size:14px;opacity:.62;font-weight:500;margin-bottom:14px}
+.purpose{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--w15);border-radius:14px;
+  padding:11px 14px;margin-bottom:16px;
+  font-size:13px;line-height:1.55;font-style:italic;opacity:.9;
+}
+
+/* ── SECTION TITLE ── */
+.stitle{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:2.5px;opacity:.48;margin-bottom:8px;margin-top:18px;
+}
+
+/* ── GLASS CARD ── */
+.card{
+  background:rgba(255,255,255,.09);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:18px;padding:14px 16px;margin-bottom:10px;
+  box-shadow:0 4px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.1);
+}
+.card-h{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.reps{font-size:32px;font-weight:900;letter-spacing:-1px}
+.csub{font-size:12px;opacity:.58;margin-bottom:8px}
+
+/* ── TARGET ROW ── */
+.trow{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.tlabel{font-size:13px;opacity:.58}
+.tval{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:var(--gold);letter-spacing:-1px}
+
+/* ── REST TIMER ── */
+.rest-block{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rlabel{font-size:13px;opacity:.58}
+.tbtn{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.22);
+  border-radius:22px;color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;
+  padding:7px 16px;cursor:pointer;transition:background .15s;flex-shrink:0;
+}
+.tbtn:active{background:rgba(255,255,255,.38)}
+
+/* ── TAP-TO-CHECK LIST ── */
+ul.dlist{list-style:none;padding:0}
+ul.dlist li{
+  padding:8px 0;border-bottom:1px solid var(--w07);
+  font-size:14px;display:flex;align-items:flex-start;gap:9px;line-height:1.45;
+  cursor:pointer;transition:opacity .2s;user-select:none;-webkit-user-select:none;
+}
+ul.dlist li:last-child{border-bottom:none}
+ul.dlist li::before{content:'›';font-size:18px;opacity:.42;flex-shrink:0;line-height:1.35;min-width:14px}
+ul.dlist.do li::before{content:'✓';color:var(--green);opacity:1}
+ul.dlist.dont li::before{content:'✗';color:var(--red);opacity:1}
+ul.dlist li.checked{opacity:.36;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
+ul.dlist li.checked::before{content:'✓' !important;color:var(--green) !important;opacity:1 !important}
+
+/* ── TABLES ── */
+.ttable{width:100%;border-collapse:collapse}
+.ttable th{text-align:left;padding:8px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.48;background:rgba(0,0,0,.2)}
+.ttable th:last-child{text-align:right}
+.ttable td{padding:9px 12px;border-bottom:1px solid var(--w07);font-size:15px}
+.ttable td:last-child{text-align:right;font-weight:700;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:18px}
+.ttable tr:last-child td{border-bottom:none;font-weight:800;font-size:18px}
+
+/* ── QUOTE ── */
+.quote{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);border-left:4px solid var(--gold);
+  border-radius:0 14px 14px 0;
+  padding:13px 15px;font-size:16px;font-weight:600;font-style:italic;line-height:1.55;margin:14px 0;
+}
+
+/* ── WARNING ── */
+.warn{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px 15px;margin-top:12px}
+.warn strong{display:block;margin-bottom:3px;font-family:'Barlow Condensed',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.55}
+.warn p{font-size:14px;line-height:1.5;opacity:.9}
+
+/* ── COVER GRID ── */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
+.cstat{
+  background:rgba(255,255,255,.09);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--w15);border-radius:16px;padding:14px;text-align:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+.cval{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-1px}
+.clbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;opacity:.48;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* ── SIGNS GRID ── */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.scard{background:rgba(255,255,255,.09);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--w15);border-radius:14px;padding:12px 13px}
+.stag{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.scard.good .stag{color:var(--green)}
+.scard.bad .stag{color:var(--red)}
+.scard ul{list-style:none;font-size:13px;line-height:1.75;opacity:.82}
+
+/* ── WARM-UP ROWS ── */
+.wrow{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--w07);align-items:flex-start}
+.wrow:last-child{border-bottom:none}
+.wtime{font-family:'Barlow Condensed',sans-serif;color:var(--gold);font-size:23px;font-weight:900;min-width:52px;line-height:1.2}
+.wdetail .wdh{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;margin-bottom:3px}
+.wdetail .wdb{font-size:13px;opacity:.62;line-height:1.5}
+
+/* ── RACE SPLITS ── */
+.srow{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--w07)}
+.srow:last-child{border-bottom:none}
+.sdist{font-size:15px;opacity:.82}
+.stime{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--gold)}
+
+/* ── PHASE BLOCKS ── */
+.phase{background:rgba(255,255,255,.09);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--w14);border-radius:14px;padding:14px;margin-bottom:9px}
+.plbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:6px}
+.pbody{font-size:14px;line-height:1.6;opacity:.9}
+
+/* ── FOOD TIME ── */
+.ftime{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold);margin-bottom:4px}
+
+/* ── STRIDE BAR ── */
+.stride-bar{display:flex;border-radius:10px;overflow:hidden;height:40px;margin:10px 0}
+.sb1{background:rgba(255,255,255,.18);flex:3;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.sb2{background:rgba(244,201,78,.38);flex:4;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--gold)}
+.sb3{background:rgba(255,255,255,.1);flex:3;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+/* ── LAP STOPWATCH ── */
+.lapwatch{
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:16px;margin-bottom:10px;
+}
+.lw-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;opacity:.48;margin-bottom:12px}
+.lw-time{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:62px;font-weight:900;text-align:center;color:#fff;
+  letter-spacing:-2px;line-height:1;margin-bottom:14px;font-variant-numeric:tabular-nums;
+}
+.lw-btns{display:flex;gap:8px;margin-bottom:12px}
+.lw-btn{
+  flex:1;border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;
+  letter-spacing:1px;padding:10px 4px;cursor:pointer;text-transform:uppercase;transition:background .15s;
+}
+.lw-start{background:rgba(255,255,255,.16)}
+.lw-start.active{background:rgba(255,80,80,.38)}
+.lw-lap{background:rgba(255,255,255,.1)}
+.lw-lap:disabled{opacity:.28;cursor:default}
+.lw-reset{background:rgba(255,255,255,.07)}
+.lw-btn:active:not(:disabled){filter:brightness(1.4)}
+.lw-splits{max-height:160px;overflow-y:auto}
+.lw-split{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--w07);font-size:14px}
+.lw-split:last-child{border-bottom:none}
+.lw-sn{opacity:.48;font-size:12px}
+.lw-st{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--gold)}
+.lw-sc{opacity:.4;font-size:12px}
+
+/* ── SESSION DONE BUTTON ── */
+.done-btn{
+  display:block;width:100%;border:1px solid rgba(255,255,255,.22);border-radius:16px;
+  padding:16px;margin-top:22px;
+  font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:1.5px;
+  text-transform:uppercase;cursor:pointer;transition:all .3s;
+  background:rgba(255,255,255,.13);color:#fff;
+}
+.done-btn.completed{background:rgba(110,233,123,.22);border-color:rgba(110,233,123,.5);color:var(--green)}
+
+/* ── OVAL IMAGES ── */
+.oval-wrap{border-radius:16px;overflow:hidden;margin-bottom:10px;border:1px solid var(--w15);position:relative}
+.oval-wrap img{width:100%;display:block;object-fit:cover;max-height:220px}
+.oval-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:12px 14px}
+.oval-cap-h{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900}
+.oval-cap-s{font-size:12px;opacity:.72;margin-top:2px}
+.img-missing{
+  background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.2);
+  border-radius:14px;padding:24px;text-align:center;font-size:13px;opacity:.55;line-height:1.6;
+}
+.dist-pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.dpill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.11);border:1px solid var(--w20);border-radius:20px;padding:6px 12px;
+}
+.dpill-num{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold)}
+.dpill-lbl{font-size:13px;opacity:.78}
+
+/* ── TIMER OVERLAY ── */
+#timer-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column;align-items:center;justify-content:center;gap:0}
+#timer-ov.on{display:flex}
+#tlabel{font-family:'Barlow Condensed',sans-serif;font-size:14px;opacity:.55;text-transform:uppercase;letter-spacing:3px;color:#fff;margin-bottom:20px}
+.ring-wrap{position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+#tring{position:absolute;inset:0}
+#tdisp{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-3px;line-height:1;position:relative;z-index:1}
+#tdisp.warn{color:var(--red);animation:flash .5s ease-in-out infinite alternate}
+#tdisp.done{color:var(--green)}
+@keyframes flash{from{opacity:1}to{opacity:.4}}
+#tcancel{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;padding:12px 40px;border-radius:30px;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
+
+/* ── PROGRESS + NAV ── */
+#progbar{position:fixed;bottom:0;left:0;height:3px;background:var(--gold);z-index:200;transition:width .38s cubic-bezier(.25,.46,.45,.94)}
+.navhint{position:fixed;bottom:12px;left:0;right:0;display:flex;justify-content:space-between;padding:0 12px;z-index:200;pointer-events:none}
+.narr{font-size:28px;opacity:.25;pointer-events:all;cursor:pointer;background:none;border:none;color:#fff;padding:4px 8px;line-height:1}
+
+.hint{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;opacity:.26;letter-spacing:2px;margin-top:24px;padding-bottom:4px}
+</style>
+</head>
+<body>
+<div id="carousel">
+
+<!-- ══════════════════════════════════════════
+     PAGE 0 · COVER
+══════════════════════════════════════════ -->
+<div class="slide bg-cover">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">3 km Race Plan</span>
+      <span class="page-cnt">1 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-0"></div>
+  </div>
+  <div class="content">
+    <h1>Race Training Plan</h1>
+    <div class="sub">3 June → 11 June 2026 · Race: 2:00 pm</div>
+    <div class="cgrid">
+      <div class="cstat"><div class="cval">3 km</div><div class="clbl">Race distance</div></div>
+      <div class="cstat"><div class="cval">11:30</div><div class="clbl">Target time</div></div>
+      <div class="cstat"><div class="cval">3:50</div><div class="clbl">Pace per km</div></div>
+      <div class="cstat"><div class="cval">1:32</div><div class="clbl">Per 400 m lap</div></div>
+    </div>
+    <div class="stitle">Key oval timings</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="ttable">
+        <thead><tr><th>Distance</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr><td>200 m</td><td>46 sec</td></tr>
+          <tr><td>400 m</td><td>1 min 32 sec</td></tr>
+          <tr><td>600 m</td><td>2 min 18 sec</td></tr>
+          <tr><td>800 m</td><td>3 min 04 sec</td></tr>
+          <tr><td>1 km</td><td>3 min 50 sec</td></tr>
+          <tr><td>3 km</td><td>11 min 30 sec</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn">
+      <strong>Coach's principle</strong>
+      <p>Do not train them hard every day. The aim is to make them <strong>sharp, fresh, confident, and not sore</strong>.</p>
+    </div>
+    <div class="hint">SWIPE LEFT TO START →</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 1 · OUR OVAL — DISTANCE REFERENCE
+══════════════════════════════════════════ -->
+<div class="slide bg-oval">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Reservoir Reserve</span>
+      <span class="page-cnt">2 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-1"></div>
+  </div>
+  <div class="content">
+    <h1>Our Oval</h1>
+    <div class="sub">Distance reference — Reservoir Reserve</div>
+
+    <div class="dist-pills">
+      <div class="dpill"><span class="dpill-num">400 m</span><span class="dpill-lbl">= 1 full lap</span></div>
+      <div class="dpill"><span class="dpill-num">200 m</span><span class="dpill-lbl">= half lap</span></div>
+      <div class="dpill"><span class="dpill-num">80 m</span><span class="dpill-lbl">≈ one straight</span></div>
+    </div>
+
+    <div class="stitle">Full lap view — 400 m</div>
+    <div class="oval-wrap">
+      <img src="oval1.jpg" alt="Reservoir Reserve full lap 400m"
+        onerror="this.outerHTML='<div class=\'img-missing\'>📁 Save <strong>oval1.jpg</strong> to this folder<br>to see the full-lap oval map here</div>'">
+      <div class="oval-cap">
+        <div class="oval-cap-h">400 m — full lap</div>
+        <div class="oval-cap-s">Follow the orange line all the way around</div>
+      </div>
+    </div>
+
+    <div class="stitle">Half lap view — 200 m &amp; 80 m strides</div>
+    <div class="oval-wrap">
+      <img src="oval2.jpg" alt="Reservoir Reserve half lap 200m"
+        onerror="this.outerHTML='<div class=\'img-missing\'>📁 Save <strong>oval2.jpg</strong> to this folder<br>to see the half-lap oval map here</div>'">
+      <div class="oval-cap">
+        <div class="oval-cap-h">200 m = half lap · 80 m ≈ one straight</div>
+        <div class="oval-cap-s">Strides run along one straight of the oval</div>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:8px">
+      <strong>Quick reference</strong>
+      <p>800 m = 2 full laps · 3 km = 7.5 laps · Pace at 1:32/lap = on target for 11:30</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 · WED 3 JUNE — KEY SESSION
+══════════════════════════════════════════ -->
+<div class="slide bg-key">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Wednesday 3 June <span class="key-star">KEY</span></span>
+      <span class="page-cnt">3 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-2"></div>
+  </div>
+  <div class="content">
+    <h1>Main Race-Pace Session</h1>
+    <div class="sub">Check 11:30 pace · Practise rhythm</div>
+    <div class="purpose">Purpose: Check whether 11:30 pace is realistic and practise rhythm.</div>
+
+    <div class="stitle">Warm-up — 15 minutes total</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>Easy jog: <strong>2 laps (800 m)</strong> — very relaxed</li>
+        <li>High knees — 20 m</li>
+        <li>Butt kicks — 20 m</li>
+        <li>Skipping — 20 m</li>
+        <li>Leg swings — 10 each leg</li>
+        <li>Strides: <strong>4 × 80 m</strong> relaxed fast · Walk back after each</li>
+      </ul>
+    </div>
+
+    <div class="stitle">Main session</div>
+    <div class="card">
+      <div class="card-h"><span class="reps">4</span> × 400 m</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">1:32 – 1:35</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 2 min walking</span>
+        <button class="tbtn" onclick="startTimer(120,'Rest — 2 min')">▶ 2:00</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="reps">4</span> × 200 m</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">44 – 46 sec</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 90 sec walking</span>
+        <button class="tbtn" onclick="startTimer(90,'Rest — 90 sec')">▶ 1:30</button>
+      </div>
+    </div>
+
+    <div class="stitle">Session stopwatch</div>
+    <div class="lapwatch">
+      <div class="lw-title">Tap LAP after each rep to record splits</div>
+      <div class="lw-time" id="lw-2-time">0:00.0</div>
+      <div class="lw-btns">
+        <button class="lw-btn lw-start" id="lw-2-btn" onclick="lwToggle('lw-2')">START</button>
+        <button class="lw-btn lw-lap" id="lw-2-lap" onclick="lwLap('lw-2')" disabled>LAP</button>
+        <button class="lw-btn lw-reset" onclick="lwReset('lw-2')">RESET</button>
+      </div>
+      <div class="lw-splits" id="lw-2-splits"></div>
+    </div>
+
+    <div class="stitle">Cool-down</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>1–2 laps easy jog/walk</li>
+        <li>Light stretching only</li>
+      </ul>
+    </div>
+
+    <div class="stitle">What to look for</div>
+    <div class="card">
+      <p style="font-size:14px;line-height:1.6;margin-bottom:9px">If they run 400s around <strong>1:32–1:35</strong> and look <strong>controlled</strong> → 11:30 goal is achievable.</p>
+      <p style="font-size:14px;line-height:1.6">If running <strong>1:40+</strong> and looking exhausted → adjust race target to <strong>12:00–12:20</strong>.</p>
+    </div>
+
+    <button class="done-btn" id="done-2" onclick="sessionDone(2)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 3 · THU 4 JUNE — EASY
+══════════════════════════════════════════ -->
+<div class="slide bg-easy">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Thursday 4 June</span>
+      <span class="page-cnt">4 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-3"></div>
+  </div>
+  <div class="content">
+    <h1>Easy Recovery Day</h1>
+    <div class="sub">Let the body absorb Wednesday's work</div>
+    <div class="purpose">Purpose: Let the body absorb Wednesday's work.</div>
+
+    <div class="stitle">Session</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>Easy jog: <strong>20 minutes</strong></li>
+        <li>No timing pressure</li>
+        <li>Finish with <strong>4 × 80 m relaxed strides</strong></li>
+      </ul>
+      <p style="font-size:13px;margin-top:10px;opacity:.62">Each stride should feel smooth, not like sprinting.</p>
+    </div>
+
+    <div class="stitle">If sore or tired</div>
+    <div class="card">
+      <ul class="dlist">
+        <li><strong>15 minutes easy jog/walk</strong> instead</li>
+        <li>No hard running today</li>
+      </ul>
+    </div>
+
+    <button class="done-btn" id="done-3" onclick="sessionDone(3)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 4 · FRI 5 JUNE — KEY SESSION
+══════════════════════════════════════════ -->
+<div class="slide bg-key">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Friday 5 June <span class="key-star">KEY</span></span>
+      <span class="page-cnt">5 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-4"></div>
+  </div>
+  <div class="content">
+    <h1>Controlled 800 m Session</h1>
+    <div class="sub">Build confidence at race rhythm · Last big session</div>
+    <div class="purpose">Purpose: Build confidence at race rhythm without overtraining. This is the <strong>last big session</strong> before the race.</div>
+
+    <div class="stitle">Warm-up — same as Wednesday</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>2 laps easy jog</li>
+        <li>Dynamic drills (high knees, butt kicks, skipping, leg swings)</li>
+        <li><strong>4 × 80 m strides</strong></li>
+      </ul>
+    </div>
+
+    <div class="stitle">Main session</div>
+    <div class="card">
+      <div class="card-h"><span class="reps">3</span> × 800 m</div>
+      <div class="csub">Each 800 m = 2 laps of the oval</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">3:04 – 3:10</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 3 min walking/jogging</span>
+        <button class="tbtn" onclick="startTimer(180,'Rest — 3 min')">▶ 3:00</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="reps">2</span> × 200 m</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">44 – 46 sec</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 90 sec</span>
+        <button class="tbtn" onclick="startTimer(90,'Rest — 90 sec')">▶ 1:30</button>
+      </div>
+    </div>
+
+    <div class="stitle">Session stopwatch</div>
+    <div class="lapwatch">
+      <div class="lw-title">Tap LAP after each rep to record splits</div>
+      <div class="lw-time" id="lw-4-time">0:00.0</div>
+      <div class="lw-btns">
+        <button class="lw-btn lw-start" id="lw-4-btn" onclick="lwToggle('lw-4')">START</button>
+        <button class="lw-btn lw-lap" id="lw-4-lap" onclick="lwLap('lw-4')" disabled>LAP</button>
+        <button class="lw-btn lw-reset" onclick="lwReset('lw-4')">RESET</button>
+      </div>
+      <div class="lw-splits" id="lw-4-splits"></div>
+    </div>
+
+    <div class="stitle">Cool-down</div>
+    <div class="card">
+      <ul class="dlist"><li>1–2 laps easy jog/walk</li></ul>
+    </div>
+
+    <div class="warn" style="background:rgba(255,0,0,.12)">
+      <strong>Important</strong>
+      <p>Do <strong>not</strong> add extra 800s. Even if they feel good, <strong>stop after the plan</strong>.</p>
+    </div>
+
+    <button class="done-btn" id="done-4" onclick="sessionDone(4)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 5 · SAT 6 JUNE — EASY
+══════════════════════════════════════════ -->
+<div class="slide bg-easy">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Saturday 6 June</span>
+      <span class="page-cnt">6 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-5"></div>
+  </div>
+  <div class="content">
+    <h1>Easy Run + Technique</h1>
+    <div class="sub">Keep legs moving · Improve running form</div>
+    <div class="purpose">Purpose: Keep legs moving, improve running form.</div>
+
+    <div class="stitle">Session</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>Easy jog: <strong>20 minutes</strong></li>
+        <li>Then: <strong>6 × 100 m strides</strong></li>
+      </ul>
+    </div>
+
+    <div class="stitle">100 m stride breakdown</div>
+    <div class="card">
+      <div class="stride-bar">
+        <div class="sb1">30 m Build</div>
+        <div class="sb2">40 m Smooth Fast</div>
+        <div class="sb3">30 m Relax</div>
+      </div>
+      <ul class="dlist" style="margin-top:6px">
+        <li>Walk back recovery after each</li>
+      </ul>
+    </div>
+
+    <div class="stitle">Coaching cues — tell them</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>"Tall body"</li>
+        <li>"Relax shoulders"</li>
+        <li>"Quick light feet"</li>
+        <li>"Strong arms uphill"</li>
+      </ul>
+      <p style="font-size:13px;margin-top:9px;opacity:.58">No hard lap timing today.</p>
+    </div>
+
+    <button class="done-btn" id="done-5" onclick="sessionDone(5)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 6 · SUN 7 JUNE — REST
+══════════════════════════════════════════ -->
+<div class="slide bg-rest">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Sunday 7 June</span>
+      <span class="page-cnt">7 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-6"></div>
+  </div>
+  <div class="content">
+    <h1>Rest or Very Light Jog</h1>
+    <div class="sub">Freshness — choose based on how they feel</div>
+    <div class="purpose">Purpose: Freshness. Choose based on how they feel.</div>
+
+    <div class="stitle">If they feel fresh</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>15–20 minutes very easy jog</li>
+        <li>4 × 60 m relaxed strides</li>
+      </ul>
+    </div>
+
+    <div class="stitle">If tired, sore, or cranky</div>
+    <div class="card">
+      <ul class="dlist">
+        <li><strong>Full rest day</strong></li>
+        <li>Gentle walk only</li>
+      </ul>
+      <p style="font-size:13px;margin-top:9px;opacity:.62">Do not force training today.</p>
+    </div>
+
+    <button class="done-btn" id="done-6" onclick="sessionDone(6)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 7 · MON 8 JUNE — KEY SESSION
+══════════════════════════════════════════ -->
+<div class="slide bg-key">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Monday 8 June <span class="key-star">KEY</span></span>
+      <span class="page-cnt">8 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-7"></div>
+  </div>
+  <div class="content">
+    <h1>Short Sharp Session</h1>
+    <div class="sub">Remind body of race pace without fatigue</div>
+    <div class="purpose">Purpose: Remind the body of race pace without fatigue.</div>
+
+    <div class="stitle">Warm-up</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>2 laps easy jog</li>
+        <li>Dynamic drills</li>
+        <li><strong>3 × 80 m strides</strong></li>
+      </ul>
+    </div>
+
+    <div class="stitle">Main session</div>
+    <div class="card">
+      <div class="card-h"><span class="reps">2</span> × 400 m</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">1:32 – 1:35</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 3 min walking</span>
+        <button class="tbtn" onclick="startTimer(180,'Rest — 3 min')">▶ 3:00</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span class="reps">3</span> × 200 m</div>
+      <div class="trow"><span class="tlabel">Target each</span><span class="tval">44 – 46 sec</span></div>
+      <div class="rest-block">
+        <span class="rlabel">Rest: 2 min walking</span>
+        <button class="tbtn" onclick="startTimer(120,'Rest — 2 min')">▶ 2:00</button>
+      </div>
+    </div>
+
+    <div class="stitle">Session stopwatch</div>
+    <div class="lapwatch">
+      <div class="lw-title">Tap LAP after each rep to record splits</div>
+      <div class="lw-time" id="lw-7-time">0:00.0</div>
+      <div class="lw-btns">
+        <button class="lw-btn lw-start" id="lw-7-btn" onclick="lwToggle('lw-7')">START</button>
+        <button class="lw-btn lw-lap" id="lw-7-lap" onclick="lwLap('lw-7')" disabled>LAP</button>
+        <button class="lw-btn lw-reset" onclick="lwReset('lw-7')">RESET</button>
+      </div>
+      <div class="lw-splits" id="lw-7-splits"></div>
+    </div>
+
+    <div class="stitle">Cool-down</div>
+    <div class="card"><ul class="dlist"><li>1 lap easy jog/walk</li></ul></div>
+
+    <div class="quote">"I could have done more."<br><span style="font-size:13px;font-weight:500;font-style:normal">That's how they should feel after this session. If exhausted — it was too hard.</span></div>
+
+    <button class="done-btn" id="done-7" onclick="sessionDone(7)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 8 · TUE 9 JUNE — EASY
+══════════════════════════════════════════ -->
+<div class="slide bg-easy">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Tuesday 9 June</span>
+      <span class="page-cnt">9 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-8"></div>
+  </div>
+  <div class="content">
+    <h1>Easy Day</h1>
+    <div class="sub">Recovery and confidence</div>
+    <div class="purpose">Purpose: Recovery and confidence.</div>
+
+    <div class="stitle">Session</div>
+    <div class="card">
+      <ul class="dlist">
+        <li>15–20 minutes easy jog</li>
+        <li>4 × 80 m relaxed strides</li>
+      </ul>
+      <p style="font-size:13px;margin-top:9px;opacity:.62">No watches needed (except strides if you want).</p>
+    </div>
+
+    <div class="stitle">Watch their body language</div>
+    <div class="sgrid">
+      <div class="scard good">
+        <div class="stag">Good signs</div>
+        <ul>
+          <li>Bouncy running</li>
+          <li>Talking normally after run</li>
+          <li>No limping</li>
+          <li>Good mood</li>
+        </ul>
+      </div>
+      <div class="scard bad">
+        <div class="stag">Warning signs</div>
+        <ul>
+          <li>Heavy legs</li>
+          <li>Complaining of soreness</li>
+          <li>Poor sleep</li>
+          <li>Irritable or flat</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:12px">
+      <strong>If bad signs appear</strong>
+      <p>Reduce Wednesday's session (day before race).</p>
+    </div>
+
+    <button class="done-btn" id="done-8" onclick="sessionDone(8)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 9 · WED 10 JUNE — DAY BEFORE RACE
+══════════════════════════════════════════ -->
+<div class="slide bg-prerace">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Wednesday 10 June</span>
+      <span class="page-cnt">10 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-9"></div>
+  </div>
+  <div class="content">
+    <h1>Day Before Race</h1>
+    <div class="sub">Stay fresh, not fit</div>
+    <div class="purpose">Purpose: Stay fresh, not fit.</div>
+
+    <div class="stitle">Best session</div>
+    <div class="card">
+      <ul class="dlist do">
+        <li>10–15 minutes very easy jog</li>
+        <li>3 × 60 m relaxed strides</li>
+        <li><strong>Stop. That is all.</strong></li>
+      </ul>
+    </div>
+
+    <div class="stitle">Do NOT do any of these</div>
+    <div class="card">
+      <ul class="dlist dont">
+        <li>400 m repeats</li>
+        <li>800 m repeats</li>
+        <li>Time trial</li>
+        <li>Sprint race between the girls</li>
+        <li>New shoes</li>
+        <li>New food</li>
+      </ul>
+    </div>
+
+    <div class="stitle">Evening</div>
+    <div class="card">
+      <ul class="dlist do">
+        <li>Early dinner</li>
+        <li>Prepare shoes, socks, uniform, water bottle</li>
+        <li>Sleep early</li>
+      </ul>
+    </div>
+
+    <button class="done-btn" id="done-9" onclick="sessionDone(9)">Session Done ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 10 · THU 11 JUNE — RACE MORNING FOOD
+══════════════════════════════════════════ -->
+<div class="slide bg-raceday">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Thursday 11 June <span class="race-tag">Race Day</span></span>
+      <span class="page-cnt">11 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-10"></div>
+  </div>
+  <div class="content">
+    <h1>Race Day — Food Plan</h1>
+    <div class="sub">Race at 2:00 pm</div>
+
+    <div class="ftime">7:30 – 8:30 am</div>
+    <div class="stitle">Breakfast</div>
+    <div class="card">
+      <ul class="dlist do">
+        <li>Toast with honey/jam + banana</li>
+        <li>Cereal/oats with milk</li>
+        <li>Eggs on toast (if they usually tolerate it)</li>
+        <li>Yoghurt and fruit</li>
+      </ul>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)">
+        <p style="font-size:11px;opacity:.45;margin-bottom:5px;text-transform:uppercase;letter-spacing:1px;font-family:'Barlow Condensed',sans-serif">Avoid</p>
+        <ul class="dlist dont">
+          <li>Greasy or spicy food</li>
+          <li>New foods</li>
+          <li>Too much fibre</li>
+          <li>Energy drinks</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftime" style="margin-top:14px">11:00 – 11:30 am</div>
+    <div class="stitle">Lunch — light and familiar</div>
+    <div class="card">
+      <ul class="dlist do">
+        <li>Simple sandwich (honey/jam/egg/chicken)</li>
+        <li>Banana</li>
+        <li>Small yoghurt</li>
+        <li>Rice or pasta, small portion</li>
+        <li>Water</li>
+      </ul>
+      <p style="font-size:13px;margin-top:9px;opacity:.62">Do not give a very heavy meal close to the race.</p>
+    </div>
+
+    <div class="ftime" style="margin-top:14px">12:45 – 1:00 pm</div>
+    <div class="stitle">Snack — only if hungry</div>
+    <div class="card">
+      <ul class="dlist do">
+        <li>Half banana</li>
+        <li>Small muesli bar</li>
+        <li>A few crackers</li>
+        <li>Small piece of toast</li>
+      </ul>
+      <p style="font-size:13px;margin-top:9px;opacity:.62">Water: small sips only. No big drinking just before race.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 11 · RACE DAY WARM-UP SCHEDULE
+══════════════════════════════════════════ -->
+<div class="slide bg-raceday">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Race Day Warm-up <span class="race-tag">2:00 PM</span></span>
+      <span class="page-cnt">12 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-11"></div>
+  </div>
+  <div class="content">
+    <h1>Warm-up Schedule</h1>
+    <div class="sub">Race at 2:00 pm — start warm-up at 1:20 pm</div>
+
+    <div class="card" style="padding:4px 14px">
+      <div class="wrow">
+        <div class="wtime">1:20</div>
+        <div class="wdetail"><div class="wdh">Easy jog</div><div class="wdb">8–10 minutes easy jog</div></div>
+      </div>
+      <div class="wrow">
+        <div class="wtime">1:30</div>
+        <div class="wdetail"><div class="wdh">Drills</div><div class="wdb">High knees 20 m · Butt kicks 20 m · Skips 20 m · Leg swings · 2 short accelerations</div></div>
+      </div>
+      <div class="wrow">
+        <div class="wtime">1:40</div>
+        <div class="wdetail"><div class="wdh">Strides</div><div class="wdb">4 × 80 m — smooth and controlled, not full sprint</div></div>
+      </div>
+      <div class="wrow">
+        <div class="wtime">1:50</div>
+        <div class="wdetail"><div class="wdh">Stay warm</div><div class="wdb">Walk around · Small sips of water only · Positive talk</div></div>
+      </div>
+      <div class="wrow">
+        <div class="wtime">1:57</div>
+        <div class="wdetail"><div class="wdh">Move to start line</div><div class="wdb">Tell them: "First 400 controlled. Do not sprint the start."</div></div>
+      </div>
+    </div>
+
+    <div class="quote">"First 400 controlled. Do not sprint the start."</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 12 · RACE STRATEGY
+══════════════════════════════════════════ -->
+<div class="slide bg-strategy">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Race Strategy <span class="race-tag">11:30 Target</span></span>
+      <span class="page-cnt">13 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-12"></div>
+  </div>
+  <div class="content">
+    <h1>Race Strategy</h1>
+    <div class="sub">3 km in 11 min 30 sec</div>
+
+    <div class="stitle">Target splits</div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="srow"><span class="sdist">400 m</span><span class="stime">1:32</span></div>
+      <div class="srow"><span class="sdist">800 m</span><span class="stime">3:04</span></div>
+      <div class="srow"><span class="sdist">1 km</span><span class="stime">3:50</span></div>
+      <div class="srow"><span class="sdist">1.5 km</span><span class="stime">5:45</span></div>
+      <div class="srow"><span class="sdist">2 km</span><span class="stime">7:40</span></div>
+      <div class="srow"><span class="sdist">2.4 km</span><span class="stime">9:12</span></div>
+      <div class="srow" style="background:rgba(244,201,78,.1)"><span class="sdist" style="font-weight:700">🏁 3 km</span><span class="stime">11:30</span></div>
+    </div>
+
+    <div class="stitle" style="margin-top:16px">Race phases</div>
+    <div class="phase">
+      <div class="plbl">First 500 m</div>
+      <div class="pbody">Do <strong>not</strong> chase the fastest starters. They should feel: "This is fast, but controlled."</div>
+    </div>
+    <div class="phase">
+      <div class="plbl">Middle 1.5 km</div>
+      <div class="pbody">This is where the race becomes uncomfortable. Tell them: "Relax your face, strong arms, catch one person at a time."</div>
+    </div>
+    <div class="phase">
+      <div class="plbl">Last 800 m</div>
+      <div class="pbody">Start pushing. Tell them: "Now the race begins."</div>
+    </div>
+    <div class="phase">
+      <div class="plbl">Last 300 m</div>
+      <div class="pbody">Use everything left. Tell them: "Fast arms, quick feet, run through the finish line."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 13 · RACE SCRIPT + FINAL TIPS
+══════════════════════════════════════════ -->
+<div class="slide bg-script">
+  <div class="topbar">
+    <div class="topbar-r1">
+      <span class="page-badge">Race Script + Final Tips</span>
+      <span class="page-cnt">14 / 14</span>
+    </div>
+    <div class="daystrip" id="strip-13"></div>
+  </div>
+  <div class="content">
+    <h1>Simple Race Script</h1>
+    <div class="sub">Give them this before the start</div>
+
+    <div class="quote" style="font-size:17px;line-height:1.7">
+      "Start controlled. Don't panic. Find rhythm. Stay strong in the middle. With 800 m to go, start racing. With 300 m to go, give everything."
+    </div>
+
+    <div class="stitle">The three sessions that mattered most</div>
+    <div class="card">
+      <ul class="dlist">
+        <li><strong>Wednesday 3 June:</strong> 4 × 400 m + 4 × 200 m</li>
+        <li><strong>Friday 5 June:</strong> 3 × 800 m</li>
+        <li><strong>Monday 8 June:</strong> 2 × 400 m + 3 × 200 m</li>
+      </ul>
+      <p style="font-size:14px;line-height:1.5;margin-top:10px">Everything else is easy.</p>
+    </div>
+
+    <div class="warn">
+      <strong>Final reminder</strong>
+      <p>Do <strong>not</strong> try to squeeze in more fitness now. In the last week, <strong>freshness beats extra training</strong>.</p>
+    </div>
+
+    <div class="hint" style="margin-top:28px">← SWIPE BACK TO REVIEW</div>
+  </div>
+</div>
+
+</div><!-- #carousel -->
+
+<!-- TIMER OVERLAY -->
+<div id="timer-ov">
+  <div id="tlabel">REST</div>
+  <div class="ring-wrap">
+    <svg id="tring" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
+      <circle id="tring-p" cx="100" cy="100" r="88" fill="none"
+        stroke="#f4c94e" stroke-width="6" stroke-linecap="round"
+        stroke-dasharray="553" stroke-dashoffset="0"
+        transform="rotate(-90 100 100)"/>
+    </svg>
+    <div id="tdisp">0:00</div>
+  </div>
+  <button id="tcancel" onclick="cancelTimer()">Cancel</button>
+</div>
+
+<!-- PROGRESS + NAV -->
+<div id="progbar"></div>
+<div class="navhint">
+  <button class="narr" id="btnP" onclick="go(cur-1)">‹</button>
+  <button class="narr" id="btnN" onclick="go(cur+1)">›</button>
+</div>
+
+<script>
+const TOTAL = 14;
+let cur = 0, sx = 0, sy = 0, locked = null, dragging = false;
+
+// Page → strip index (-1 = no active day)
+const P2S = {2:0,3:1,4:2,5:3,6:4,7:5,8:6,9:7,10:8,11:8,12:8,13:8};
+// Strip index → page to jump to when dot tapped
+const S2P = [2,3,4,5,6,7,8,9,10];
+const SLBLS = ['W3','T4','F5','S6','S7','M8','T9','W10','🏁'];
+// Training days: pages 2–9 have "session done". Race pages: 10-13.
+const D2P = {3:2,4:3,5:4,6:5,7:6,8:7,9:8,10:9,11:10};
+
+// ── BUILD ALL DAY STRIPS ──
+function buildStrips() {
+  document.querySelectorAll('.daystrip').forEach(strip => {
+    strip.innerHTML = SLBLS.map((lbl, i) =>
+      `<div class="ds-dot" onclick="go(${S2P[i]})" data-si="${i}">
+        <div class="ds-pip"></div>
+        <div class="ds-lbl">${lbl}</div>
+      </div>`
+    ).join('');
+  });
+}
+
+// ── UPDATE ALL STRIPS ──
+function updateStrips() {
+  const active = P2S[cur] !== undefined ? P2S[cur] : -1;
+  document.querySelectorAll('.ds-dot').forEach(dot => {
+    const si = +dot.dataset.si;
+    const page = S2P[si];
+    dot.classList.toggle('active', si === active);
+    dot.classList.toggle('done', si !== active && !!localStorage.getItem('done_p' + page));
+  });
+}
+
+// ── NAVIGATION ──
+function getStartPage() {
+  const now = new Date();
+  if (now.getMonth() !== 5) return 0;
+  const d = now.getDate();
+  if (d === 11) {
+    const t = now.getHours() * 60 + now.getMinutes();
+    if (t >= 13*60+57) return 12;
+    if (t >= 13*60+20) return 11;
+    return 10;
+  }
+  return D2P[d] !== undefined ? D2P[d] : 0;
+}
+
+function go(page, animate) {
+  if (page < 0 || page >= TOTAL) return;
+  cur = page;
+  const c = document.getElementById('carousel');
+  if (animate === false) c.classList.add('notrans');
+  c.style.transform = 'translateX(-' + (page * 100) + 'vw)';
+  if (animate === false) requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove('notrans')));
+  document.getElementById('progbar').style.width = (TOTAL > 1 ? cur/(TOTAL-1)*100 : 100) + '%';
+  document.getElementById('btnP').style.opacity = cur === 0 ? '0' : '.25';
+  document.getElementById('btnN').style.opacity = cur === TOTAL-1 ? '0' : '.25';
+  updateStrips();
+}
+
+// ── TOUCH SWIPE ──
+const car = document.getElementById('carousel');
+car.addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; dragging=true; locked=null; }, {passive:true});
+car.addEventListener('touchmove', e => {
+  if (!dragging) return;
+  const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
+  if (!locked && (Math.abs(dx)>6||Math.abs(dy)>6)) locked = Math.abs(dx)>Math.abs(dy)?'h':'v';
+  if (locked==='h') e.preventDefault();
+}, {passive:false});
+car.addEventListener('touchend', e => {
+  if (!dragging||locked!=='h'){dragging=false;return;}
+  dragging=false;
+  const dx=e.changedTouches[0].clientX-sx;
+  if (Math.abs(dx)<48) return;
+  go(dx<0?cur+1:cur-1);
+}, {passive:true});
+
+// ── TAP-TO-CHECK ──
+function initChecks() {
+  document.querySelectorAll('.slide').forEach((slide, pi) => {
+    slide.querySelectorAll('ul.dlist li').forEach((li, ii) => {
+      li.dataset.pi = pi; li.dataset.ii = ii;
+      if (localStorage.getItem('chk_'+pi+'_'+ii)) li.classList.add('checked');
+      li.addEventListener('click', function(e) {
+        if (e.target.closest('button')) return;
+        this.classList.toggle('checked');
+        const key = 'chk_'+this.dataset.pi+'_'+this.dataset.ii;
+        this.classList.contains('checked') ? localStorage.setItem(key,'1') : localStorage.removeItem(key);
+      });
+    });
+  });
+}
+
+// ── SESSION DONE ──
+function sessionDone(pageIdx) {
+  localStorage.setItem('done_p'+pageIdx, '1');
+  const btn = document.getElementById('done-'+pageIdx);
+  if (btn) { btn.classList.add('completed'); btn.textContent='✓ Session Complete!'; }
+  if (navigator.vibrate) navigator.vibrate(80);
+  updateStrips();
+}
+
+function initDoneBtns() {
+  for (let p=2; p<=9; p++) {
+    if (localStorage.getItem('done_p'+p)) {
+      const btn = document.getElementById('done-'+p);
+      if (btn) { btn.classList.add('completed'); btn.textContent='✓ Session Complete!'; }
+    }
+  }
+}
+
+// ── REST TIMER ──
+let tInt=null, tRem=0, tTotal=0;
+
+function startTimer(sec, label) {
+  clearInterval(tInt); tRem=sec; tTotal=sec;
+  document.getElementById('tlabel').textContent = label.toUpperCase();
+  document.getElementById('timer-ov').classList.add('on');
+  tickTimer();
+  tInt = setInterval(tickTimer, 1000);
+}
+
+function tickTimer() {
+  const d = document.getElementById('tdisp');
+  const m = Math.floor(tRem/60), s = tRem%60;
+  d.textContent = m+':'+String(s).padStart(2,'0');
+  d.className = tRem<=10 ? 'warn' : '';
+  const pct = tTotal>0 ? tRem/tTotal : 1;
+  document.getElementById('tring-p').setAttribute('stroke-dashoffset', 553*(1-pct));
+  if (tRem<=0) {
+    clearInterval(tInt);
+    d.textContent='GO!'; d.className='done';
+    document.getElementById('tlabel').textContent='REST COMPLETE';
+    if (navigator.vibrate) navigator.vibrate([200,100,200]);
+    setTimeout(()=>{ document.getElementById('timer-ov').classList.remove('on'); d.className=''; },2200);
+  }
+  tRem--;
+}
+
+function cancelTimer() {
+  clearInterval(tInt);
+  document.getElementById('timer-ov').classList.remove('on');
+  document.getElementById('tdisp').className='';
+}
+
+// ── LAP STOPWATCH ──
+const lws={};
+function lwGet(id){if(!lws[id])lws[id]={running:false,start:0,base:0,splits:[],iv:null};return lws[id];}
+
+function lwToggle(id) {
+  const lw=lwGet(id);
+  const btn=document.getElementById(id+'-btn'), lap=document.getElementById(id+'-lap');
+  if (!lw.running) {
+    lw.start=Date.now()-lw.base; lw.running=true;
+    lw.iv=setInterval(()=>lwDraw(id),100);
+    btn.textContent='STOP'; btn.classList.add('active');
+    if(lap) lap.disabled=false;
+  } else {
+    lw.base=Date.now()-lw.start; lw.running=false;
+    clearInterval(lw.iv);
+    btn.textContent='START'; btn.classList.remove('active');
+    if(lap) lap.disabled=true;
+  }
+}
+
+function lwLap(id) {
+  const lw=lwGet(id);
+  if (!lw.running) return;
+  lw.splits.push(Date.now()-lw.start);
+  lwDraw(id); lwRenderSplits(id);
+  if(navigator.vibrate) navigator.vibrate(40);
+}
+
+function lwReset(id) {
+  const lw=lwGet(id);
+  clearInterval(lw.iv); lw.running=false; lw.start=0; lw.base=0; lw.splits=[];
+  const t=document.getElementById(id+'-time'); if(t) t.textContent='0:00.0';
+  const btn=document.getElementById(id+'-btn'); if(btn){btn.textContent='START';btn.classList.remove('active');}
+  const lap=document.getElementById(id+'-lap'); if(lap) lap.disabled=true;
+  const sp=document.getElementById(id+'-splits'); if(sp) sp.innerHTML='';
+}
+
+function lwDraw(id) {
+  const lw=lwGet(id);
+  const ms=lw.running?Date.now()-lw.start:lw.base;
+  const el=document.getElementById(id+'-time');
+  if(el) el.textContent=fmtMs(ms);
+}
+
+function fmtMs(ms) {
+  const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000), t=Math.floor((ms%1000)/100);
+  return m+':'+String(s).padStart(2,'0')+'.'+t;
+}
+
+function lwRenderSplits(id) {
+  const lw=lwGet(id), c=document.getElementById(id+'-splits');
+  if(!c||!lw.splits.length) return;
+  c.innerHTML = lw.splits.map((ms,i)=>{
+    const prev=i>0?lw.splits[i-1]:0, lap=ms-prev;
+    return `<div class="lw-split"><span class="lw-sn">Rep ${i+1}</span><span class="lw-st">${fmtMs(lap)}</span><span class="lw-sc">total ${fmtMs(ms)}</span></div>`;
+  }).reverse().join('');
+}
+
+// ── INIT ──
+buildStrips();
+initChecks();
+initDoneBtns();
+go(getStartPage(), false);
+</script>
+</body>
+</html>
